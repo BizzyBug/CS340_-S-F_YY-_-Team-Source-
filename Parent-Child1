@@ -12,12 +12,13 @@ module_name_gl = 'write the file name w/o file extension'
 Version: <***>
 
 Description:
-    <***>
-
+    Import resturant data from a csv file and get a visulization of the data. 
+    See if the resturant has the potential to handle more expenses; in the form of labor.
+    
 Authors:
-    <***>
+    Elizabeth, Henery, and Davidson
 
-Date Created     :  <***>
+Date Created     :  4-6-2024
 Date Last Updated:  <***>
 
 Doc:

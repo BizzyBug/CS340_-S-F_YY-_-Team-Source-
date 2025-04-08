@@ -12,7 +12,10 @@ module_name_gl = 'write the file name w/o file extension'
 Version: <***>
 
 Description:
-    <***>
+    See if there is a specific time where the most orders are made and the income per
+    hour is the highest.
+    This will help us see if there is a specific time where we can have more employees
+
 
 Authors:
     <***>
