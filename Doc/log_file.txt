@@ -1,0 +1,33 @@
+File badfile.lol not found in DataAnalysis.read_csv() function.
+2025-04-12 21:54:09.050060
+
+File badfile.lol not found in DataAnalysis.read_csv() function.
+2025-04-14 19:52:09.608877
+
+File ..Input/data.csv not found in DataAnalysis.read_csv() function.
+2025-04-14 19:57:52.429431
+
+File ..Input/data.csv not found in DataAnalysis.read_csv() function.
+2025-04-14 20:01:44.693633
+
+File Input/data.csv not found in DataAnalysis.read_csv() function.
+2025-04-14 20:01:53.920204
+
+File ..Input/data.csv not found in DataAnalysis.read_csv() function.
+2025-04-14 20:03:15.420710
+
+File Input/data.csv not found in DataAnalysis.read_csv() function.
+2025-04-14 20:03:56.777340
+
+File badfile.lol not found in DataAnalysis.read_csv() function.
+2025-04-14 20:13:01.216775
+
+File badfile.lol not found in DataAnalysis.read_csv() function.
+2025-04-14 20:13:01.217775
+
+File badfile.lol not found in DataAnalysis.read_csv() function.
+2025-04-14 20:13:48.454388
+
+File badfile.lol not found in DataAnalysis.read_csv() function.
+2025-04-14 20:13:48.454388
+
