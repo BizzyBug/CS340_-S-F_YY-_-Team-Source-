@@ -27,7 +27,10 @@ Doc:
     <***>
 
 Notes:
-    <***>
+    Cannot commit from visual studio, so copy and pasting code. Need to see if Henery's
+    works with this because there seems to be variation between our versions.
+    Very rough draft, struggling with very vauge instructions. Probably need to see if math is 
+    actually true. Median is coming out to 0, seems fishy. 
 '''
 
 #%% IMPORTS                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
