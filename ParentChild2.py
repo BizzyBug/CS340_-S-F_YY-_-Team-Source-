@@ -71,7 +71,7 @@ class Inventory():
     pass
 
 class InventoryAnalytics(Inventory):
-
+    
     def __init__(self, filename):
         self.filename = filename
 
@@ -84,7 +84,8 @@ class InventoryAnalytics(Inventory):
                 file.write(f"File {self.filename} not found in InventoryAnalysis.readPickle() function.\n")
                 file.write(f'{dt.datetime.now()}\n\n')
             return None
-
+          
+    
     def Probability(self, **kwargs):
         df = self.readPickle()
 
@@ -190,8 +191,10 @@ class InventoryAnalytics(Inventory):
         angle_cal = np.arccos(dot_product / (magnitude1 * magnitude2)) if magnitude1 != 0 and magnitude2 != 0 else 0
         angle = np.degrees(angle_cal)
         
-        def orthogonal(v1, v2):
-            return np.isclose(np.dot(v1, v2), 0)
+        
+        def orthogonal():
+            nonlocal vector1, vector2
+            return np.isclose(np.dot(vector1,vector2), 0)
         
         with open(f'Output/WrittenOutput', 'a') as file:
             file.write(f"Vector 1: {col1}\n")
@@ -207,8 +210,8 @@ class InventoryAnalytics(Inventory):
             file.write(f"Projection of Vector 1 on Vector 2: {projection1}\n")
             file.write(f"Projection of Vector 2 on Vector 1: {projection2}\n")
             file.write(f"Angle between Vectors (degrees): {angle}\n")
-            file.write(f"Are the vectors orthogonal? {'Yes' if orthogonal(vector1, vector2) else 'No'}\n")
-
+            file.write(f"Are the vectors orthogonal? {'Yes' if orthogonal() else 'No'}\n")
+    
 
             
 #Function definitions Start Here
