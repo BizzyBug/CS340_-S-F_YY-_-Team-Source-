@@ -27,9 +27,7 @@ Doc:
     <***>
 
 Notes:
-    Cannot commit from visual studio, so copy and pasting code. Need to see if Henery's
-    works with this because there seems to be variation between our versions.
-
+    <***>
 '''
 
 #%% IMPORTS                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -40,6 +38,8 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import pickle as pck
 import datetime as dt
+import numpy as np
+import math
 
 #custom imports
 
@@ -68,10 +68,12 @@ import datetime as dt
 
 #Class definitions Start Here
 class Inventory():
-    pass
+    pass       
+
 
 class InventoryAnalytics(Inventory):
-    
+
+
     def __init__(self, filename):
         self.filename = filename
 
@@ -85,7 +87,6 @@ class InventoryAnalytics(Inventory):
                 file.write(f'{dt.datetime.now()}\n\n')
             return None
           
-    
     def Probability(self, **kwargs):
         df = self.readPickle()
 
@@ -100,20 +101,27 @@ class InventoryAnalytics(Inventory):
                     file.write(f'{dt.datetime.now()}\n\n')
                 continue
         
-                               
-            if callable(val):
-                condition = val(df[col])
-        
+        if callable(val):
+            condition = val(df[col])
+        elif isinstance(val, str) and val.startswith("eval:"):
+            try:
+                expr = val.replace("eval:", "")
+                condition = eval(f"df[col] {expr}")
+            except Exception as e:
+                with open(f'Doc/log_file.txt', 'a') as file:
+                    file.write(f"Eval error for column {col}: {e}\n")
+                    file.write(f'{dt.datetime.now()}\n\n')
+                return None
             else:
                 condition = df[col] == val
-            
-            joint_df = joint_df & condition 
 
-            event_results[col] = condition
+
 
         
         event1_col, event1_condition = list(kwargs.items())[0]
         event2_col, event2_condition = list(kwargs.items())[1] 
+
+
 
     
         if callable(event1_condition):
@@ -212,8 +220,50 @@ class InventoryAnalytics(Inventory):
             file.write(f"Angle between Vectors (degrees): {angle}\n")
             file.write(f"Are the vectors orthogonal? {'Yes' if orthogonal() else 'No'}\n")
     
+    def unuiqe_vals(self, col1, col2, col3, col4):
+        df = self.readPickle()
 
-            
+        if col1 not in df.columns or col2 not in df.columns or col3 not in df.columns or col4 not in df.columns:
+            with open(f'Doc/log_file.txt', 'a') as file:
+                file.write(f"Column {col1}, {col2}, {col3} or {col4} not found in DataFrame.\n")
+                file.write(f'{dt.datetime.now()}\n\n')
+            return None
+
+        
+        categories1 = df[col1].unique()
+        categories2 = df[col2].unique()
+        categories3 = df[col3].unique()
+        categories4 = df[col4].unique()
+
+        combinations = df.drop_duplicates(subset=[col1,col2, col3, col4])
+        permutations = math.factorial(len(combinations))
+
+
+
+        
+        with open(f'Output/WrittenOutput', 'a') as file:
+            file.write(f"Categories in {col1}: {categories1}\n")
+            file.write(f"Categories in {col2}: {categories2}\n")
+            file.write(f"Categories in {col3}: {categories3}\n")
+            file.write(f"Categories in {col4}: {categories4}\n")
+            file.write(f"Number of unique combinations: {len(combinations)}\n")
+            file.write(f"Number of unique permutations: {permutations}\n")
+
+        
+                
+        
+        
+
+
+        
+
+
+
+
+
+        
+
+
 #Function definitions Start Here
 def main():
     pass
@@ -228,4 +278,7 @@ if __name__ == "__main__":
     test = InventoryAnalytics('test_pickle.pkl')
     testResult = test.readPickle()
     count_test = test.Probability(Party_size=2, Arrival_Time = lambda x: x>= 12)
+    test.Probability(Price="eval:> 50", Quantity="eval:< 100")
     test.Vector_Ops('Party_size', 'Bill_Amount')
+    test.unuiqe_vals('Party_size', 'Arrival_Time', 'Duration_of_Stay', 'Bill_Amount')
+
