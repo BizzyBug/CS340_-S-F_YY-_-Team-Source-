@@ -27,7 +27,9 @@ Doc:
     <***>
 
 Notes:
-    <***>
+    Cannot do commits from visual studio, there is a discrepencey between my version and the GitHub one. Have been copy and pasting everything to and from GitHub. 
+    Need to see if it runs on Henery's version. I am still missing some requirments like the *args, and converting a mxn numpy array into a data frame.
+    I think everything so far is in order, still trying to relate this to a goal in a real life resturant situation.
 '''
 
 #%% IMPORTS                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
