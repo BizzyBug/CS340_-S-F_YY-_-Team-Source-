@@ -31,3 +31,153 @@ File badfile.lol not found in DataAnalysis.read_csv() function.
 File badfile.lol not found in DataAnalysis.read_csv() function.
 2025-04-14 20:13:48.454388
 
+File test_pickle.pkl not found in InventoryAnalysis.readPickle() function.
+2025-04-27 11:25:27.151471
+
+File test_pickle.pkl not found in InventoryAnalysis.readPickle() function.
+2025-04-27 11:25:27.152472
+
+Column Price not found in DataFrame.
+2025-04-27 11:28:44.795897
+
+Column Quantity not found in DataFrame.
+2025-04-27 11:28:44.795897
+
+Eval error for column Quantity: 'Quantity'
+2025-04-27 11:28:44.795897
+
+Column Price not found in DataFrame.
+2025-04-27 11:31:10.240735
+
+Column Quantity not found in DataFrame.
+2025-04-27 11:31:10.240735
+
+Eval error for column Quantity: 'Quantity'
+2025-04-27 11:31:10.240735
+
+Column Price not found in DataFrame.
+2025-04-27 11:45:52.051833
+
+Column Quantity not found in DataFrame.
+2025-04-27 11:45:52.051833
+
+Eval error for column Quantity: 'Quantity'
+2025-04-27 11:45:52.051833
+
+Column Price not found in DataFrame.
+2025-04-27 11:48:26.369843
+
+Column Quantity not found in DataFrame.
+2025-04-27 11:48:26.369843
+
+Eval error for column Quantity: 'Quantity'
+2025-04-27 11:48:26.369843
+
+Column Price not found in DataFrame.
+2025-04-27 13:22:13.221911
+
+Column Quantity not found in DataFrame.
+2025-04-27 13:22:13.221911
+
+Eval error for column Quantity: 'Quantity'
+2025-04-27 13:22:13.222912
+
+Column Price not found in DataFrame.
+2025-04-27 13:23:21.216527
+
+Column Quantity not found in DataFrame.
+2025-04-27 13:23:21.216527
+
+Eval error for column Quantity: 'Quantity'
+2025-04-27 13:23:21.216527
+
+Column Price not found in DataFrame.
+2025-04-27 13:25:52.476221
+
+Column Quantity not found in DataFrame.
+2025-04-27 13:25:52.476221
+
+Eval error for column Quantity: 'Quantity'
+2025-04-27 13:25:52.476221
+
+Column Price not found in DataFrame.
+2025-04-27 13:26:23.804446
+
+Column Quantity not found in DataFrame.
+2025-04-27 13:26:23.804446
+
+Eval error for column Quantity: 'Quantity'
+2025-04-27 13:26:23.805446
+
+Column Price not found in DataFrame.
+2025-04-27 13:26:55.123818
+
+Column Quantity not found in DataFrame.
+2025-04-27 13:26:55.123818
+
+Eval error for column Quantity: 'Quantity'
+2025-04-27 13:26:55.124819
+
+Column Price not found in DataFrame.
+2025-04-27 13:28:52.149776
+
+Column Quantity not found in DataFrame.
+2025-04-27 13:28:52.150777
+
+Eval error for column Quantity: 'Quantity'
+2025-04-27 13:28:52.150777
+
+Column Price not found in DataFrame.
+2025-04-27 13:53:31.982657
+
+Column Quantity not found in DataFrame.
+2025-04-27 13:53:31.983656
+
+Column Price not found in DataFrame.
+2025-04-27 13:54:00.709048
+
+Column Quantity not found in DataFrame.
+2025-04-27 13:54:00.709048
+
+Column Price not found in DataFrame.
+2025-04-27 13:54:49.549265
+
+Column Quantity not found in DataFrame.
+2025-04-27 13:54:49.549265
+
+Column Price not found in DataFrame.
+2025-04-27 13:58:38.130923
+
+Column Quantity not found in DataFrame.
+2025-04-27 13:58:38.130923
+
+Column Price not found in DataFrame.
+2025-04-27 15:27:21.352775
+
+Column Quantity not found in DataFrame.
+2025-04-27 15:27:21.352775
+
+Column Price not found in DataFrame.
+2025-04-27 15:28:12.792448
+
+Column Quantity not found in DataFrame.
+2025-04-27 15:28:12.792448
+
+Column Price not found in DataFrame.
+2025-04-27 15:38:57.910167
+
+Column Quantity not found in DataFrame.
+2025-04-27 15:38:57.911168
+
+Column Price not found in DataFrame.
+2025-04-27 15:39:39.531704
+
+Column Quantity not found in DataFrame.
+2025-04-27 15:39:39.532705
+
+Column Price not found in DataFrame.
+2025-04-27 15:40:00.129529
+
+Column Quantity not found in DataFrame.
+2025-04-27 15:40:00.129529
+

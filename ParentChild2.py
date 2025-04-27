@@ -70,8 +70,13 @@ import math
 
 #Class definitions Start Here
 class Inventory():
-    pass       
-
+    def readData(self):
+        #read .csv into numpyArray
+        pass   
+    
+    def convert_to_df(self):
+        #convert mxn npArray to df
+        pass
 
 class InventoryAnalytics(Inventory):
 
@@ -89,87 +94,88 @@ class InventoryAnalytics(Inventory):
                 file.write(f'{dt.datetime.now()}\n\n')
             return None
           
-    def Probability(self, **kwargs):
+    def get_events(self, **kwargs):
         df = self.readPickle()
-
-
-
+        event1 = None
+        condition_str = ''
+        event_list = []
+        condition_list = []
+        '''
         joint_df = pd.Series(True, index=df.index)
-        event_results = {}
-        for col, val in kwargs.items():
+        '''
+        for col, condition in kwargs.items():
             if col not in df.columns:
                 with open(f'Doc/log_file.txt', 'a') as file:
                     file.write(f"Column {col} not found in DataFrame.\n")
                     file.write(f'{dt.datetime.now()}\n\n')
                 continue
-        
-        if callable(val):
-            condition = val(df[col])
-        elif isinstance(val, str) and val.startswith("eval:"):
-            try:
-                expr = val.replace("eval:", "")
-                condition = eval(f"df[col] {expr}")
-            except Exception as e:
-                with open(f'Doc/log_file.txt', 'a') as file:
-                    file.write(f"Eval error for column {col}: {e}\n")
-                    file.write(f'{dt.datetime.now()}\n\n')
-                return None
+
+            if callable(condition):
+                event1 = condition(df[col])
+                condition_str = 'placeholder'
+            elif isinstance(condition, str) and condition.startswith("eval:"):
+                try:
+                    expr = condition.replace("eval:", "")
+                    event1 = eval(f"df[col] {expr}")    
+                    condition_str = expr 
+                except Exception as e:
+                    with open(f'Doc/log_file.txt', 'a') as file:
+                        file.write(f"Eval error for column {col}: {e}\n")
+                        file.write(f'{dt.datetime.now()}\n\n')
+                    return None
             else:
-                condition = df[col] == val
+                event1 = df[col] == condition
+                condition_str = f'= {condition}'
 
+            event_list.append(event1)
+            condition_list.append(condition_str)
+        return event_list, condition_list
+    
+    def get_probabilities(self, event1, event2, *args):
+        df = self.readPickle()
 
+        prob_event1 = round(event1.sum() / len(df), 2)
+        prob_event2 = round(event2.sum() / len(df), 2)
 
+        event1_list = event1.to_list()
+        event2_list = event2.to_list()
+
+        joint_events = [False] * len(event1)
+
+        for i, val in enumerate(event1_list):
+            if val and event2_list[i]:
+                joint_events[i] = True
+
+        joint_events = pd.Series(joint_events)
+
+        prob_event1_and_event2 = round(joint_events.sum() / len(df), 2)
         
-        event1_col, event1_condition = list(kwargs.items())[0]
-        event2_col, event2_condition = list(kwargs.items())[1] 
-
-
-
-    
-        if callable(event1_condition):
-            event1 = df[event1_condition(df[event1_col])]
-        else:
-            event1 = df[df[event1_col] == event1_condition]
-
-        if callable(event2_condition):
-            event2 = df[event2_condition(df[event2_col])]
-        else:
-            event2 = df[df[event2_col] == event2_condition]
-    
+        prob_event1_given_event2 = round(prob_event1_and_event2 / prob_event2, 2)
+        prob_event2_given_event1 = round(prob_event1_and_event2 / prob_event1, 2)
         
-        JointCount = joint_df.sum()
-
-        Prob_A = len(event1) / len(df)
-        Prob_B = len(event2) / len(df)
-
-        prob_A_and_B = JointCount / len(df)
-        prob_A_given_B = prob_A_and_B / Prob_B
-        prob_B_Given_A = prob_A_and_B / Prob_A
-
-        mean1 = round(event1[event1_col].mean(numeric_only = True),2)
-        mean2 = round(event2[event2_col].mean(),2)
-        median1 = round(event1[event1_col].median(),2)
-        median2 = round(event2[event2_col].median(),2)
-        std1 = round(event1[event1_col].std(),2)
-        std2 = round(event2[event2_col].std(),2)
-    
-        lists = list(kwargs.items())
         with open(f'Output/WrittenOutput', 'a') as file:
-            file.write(f'Event A: {lists[0]}\n')
-            file.write(f'Event B: {lists[1]}\n')
-            file.write(f"Probability of A: {Prob_A}\n")
-            file.write(f"Probability of B: {Prob_B}\n")
-            file.write(f"Mean of A: {mean1}\n")
-            file.write(f"Mean of B: {mean2}\n")
-            file.write(f"Median of A: {median1}\n")
-            file.write(f"Median of B: {median2}\n")
-            file.write(f"Standard Deviation of A: {std1}\n")
-            file.write(f"Standard Deviation of B: {std2}\n")
-            file.write(f"Probability of A given B: {prob_A_given_B}\n")
-            file.write(f"Probability of B given A: {prob_B_Given_A}\n")
-            file.write(f"Probability of A and B: {prob_A_and_B}\n")
+            file.write(f'Event A: {event1.name} {args[0]}\n')
+            file.write(f'Event B: {event2.name} {args[1]}\n')
+            file.write(f"Probability of A: {prob_event1}\n")
+            file.write(f"Probability of B: {prob_event2}\n")
+            file.write(f"Probability of A given B: {prob_event1_given_event2}\n")
+            file.write(f"Probability of B given A: {prob_event2_given_event1}\n")
+            file.write(f"Probability of A and B: {prob_event1_and_event2}\n")
 
         
+    def get_data_stats(self, df, col):
+        mean = round(df[col].mean(numeric_only = True),2)
+        median = round(df[col].median(),2)
+        std = round(df[col].std(),2)
+
+        with open(f'Output/WrittenOutput', 'a') as file:
+            file.write(f'{col} mean: {mean}\n')
+            file.write(f'{col} median: {median}\n')
+            file.write(f'{col} std: {std}\n')
+
+    def get_all_column_stats(self, df):
+        for col in df:
+            self.get_data_stats(df, col)
 
     def Vector_Ops(self, col1, col2):
         df = self.readPickle()
@@ -185,6 +191,7 @@ class InventoryAnalytics(Inventory):
         vectors = df[[col1, col2]].values
         
         def get_position_vector(index):
+            nonlocal vectors
             position_vector = vectors[index]
             return position_vector
         
@@ -221,8 +228,9 @@ class InventoryAnalytics(Inventory):
             file.write(f"Projection of Vector 2 on Vector 1: {projection2}\n")
             file.write(f"Angle between Vectors (degrees): {angle}\n")
             file.write(f"Are the vectors orthogonal? {'Yes' if orthogonal() else 'No'}\n")
+
     
-    def unuiqe_vals(self, col1, col2, col3, col4):
+    def unique_vals(self, col1, col2, col3, col4):
         df = self.readPickle()
 
         if col1 not in df.columns or col2 not in df.columns or col3 not in df.columns or col4 not in df.columns:
@@ -240,9 +248,6 @@ class InventoryAnalytics(Inventory):
         combinations = df.drop_duplicates(subset=[col1,col2, col3, col4])
         permutations = math.factorial(len(combinations))
 
-
-
-        
         with open(f'Output/WrittenOutput', 'a') as file:
             file.write(f"Categories in {col1}: {categories1}\n")
             file.write(f"Categories in {col2}: {categories2}\n")
@@ -251,13 +256,13 @@ class InventoryAnalytics(Inventory):
             file.write(f"Number of unique combinations: {len(combinations)}\n")
             file.write(f"Number of unique permutations: {permutations}\n")
 
+
         
                 
         
         
 
 
-        
 
 
 
@@ -279,8 +284,14 @@ if __name__ == "__main__":
     
     test = InventoryAnalytics('test_pickle.pkl')
     testResult = test.readPickle()
-    count_test = test.Probability(Party_size=2, Arrival_Time = lambda x: x>= 12)
-    test.Probability(Price="eval:> 50", Quantity="eval:< 100")
+
+    events, conditions = test.get_events(Party_size=2, Arrival_Time = 'eval:>= 12')
+    
+    probabilities = test.get_probabilities(events[0], events[1], conditions[0], conditions[1])
+
+    test.get_all_column_stats(testResult)
+
+    test.get_events(Price=lambda x: x > 50, Quantity="eval:< 100")
     test.Vector_Ops('Party_size', 'Bill_Amount')
-    test.unuiqe_vals('Party_size', 'Arrival_Time', 'Duration_of_Stay', 'Bill_Amount')
+    test.unique_vals('Party_size', 'Arrival_Time', 'Duration_of_Stay', 'Bill_Amount')
 
