@@ -70,13 +70,22 @@ import math
 
 #Class definitions Start Here
 class Inventory():
-    def readData(self):
-        #read .csv into numpyArray
-        pass   
+    def readData(filename):
+        try:
+                my_data = np.genfromtxt(filename, delimiter=',')
+        except FileNotFoundError:
+            with open(f'Doc/log_file.txt', 'a') as file:
+                file.write(f"File {filename} not found in InventoryAnalysis.readPickle() function.\n")
+                file.write(f'{dt.datetime.now()}\n\n')
+            return None
+        
+        return my_data
+
     
-    def convert_to_df(self):
-        #convert mxn npArray to df
-        pass
+    
+    def convert_to_df(array):
+        new_df = pd.DataFrame(array[1:], columns=['Party_size', 'Arrival_Time', 'Duration_of_Stay', 'Bill_Amount'])
+        
 
 class InventoryAnalytics(Inventory):
 
@@ -281,6 +290,10 @@ def main():
 if __name__ == "__main__":
     
     print(f"\"{module_name_gl}\" module begins.")
+
+
+    array = Inventory.readData('Input/data.csv')
+    Inventory.convert_to_df(array)
     
     test = InventoryAnalytics('test_pickle.pkl')
     testResult = test.readPickle()
@@ -294,4 +307,6 @@ if __name__ == "__main__":
     test.get_events(Price=lambda x: x > 50, Quantity="eval:< 100")
     test.Vector_Ops('Party_size', 'Bill_Amount')
     test.unique_vals('Party_size', 'Arrival_Time', 'Duration_of_Stay', 'Bill_Amount')
+
+
 
