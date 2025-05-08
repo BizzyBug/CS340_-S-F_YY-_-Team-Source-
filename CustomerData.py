@@ -68,6 +68,7 @@ class CustomerTrends:
             filename = f'Histogram Plot of {col}.png'
             filepath = os.path.join(outputFilepath,filename)
             plt.savefig(filepath)
+            plt.close()
         
     def plot_line(self):
         for col in self.__df.select_dtypes(include=['number']).columns:
@@ -80,13 +81,14 @@ class CustomerTrends:
             filename = f'Line Plot of {col}.png'
             filepath = os.path.join(outputFilepath,filename)
             plt.savefig(filepath)
+            plt.close()
 
     def query_data(self, column, value):
         return self.__df[self.__df[column] == value]
 
 class CustomerAnalytics(CustomerTrends): 
    
-    def __init__(self, filename):
+    def __init__(self, filename = 'data.csv'):
         self.filename = filename
         super().__init__(self.read_csv())
     
@@ -111,6 +113,7 @@ class CustomerAnalytics(CustomerTrends):
             filename = f'Violin Plot of {col}.png'
             filepath = os.path.join(outputFilepath,filename)
             plt.savefig(filepath)
+            plt.close()
             
     def plot_box(self):
         for col in self.__df.select_dtypes(include=['number']).columns:
@@ -120,6 +123,7 @@ class CustomerAnalytics(CustomerTrends):
             filename = f'Box Plot of {col}.png'
             filepath = os.path.join(outputFilepath,filename)
             plt.savefig(filepath)
+            plt.close()
 
     def plot_scatter(self, x_col, y_col):
         if x_col in self.__df.columns and y_col in self.__df.columns:
@@ -131,6 +135,7 @@ class CustomerAnalytics(CustomerTrends):
             filename = f'Scatter Plot {x_col} vs {y_col}.png'
             filepath = os.path.join(outputFilepath,filename)
             plt.savefig(filepath)
+            plt.close()
             
     def advanced_query(self, conditions: dict):
         task = pd.Series([True] * len(self.__df))
@@ -169,5 +174,3 @@ if __name__ == "__main__":
     samples.plot_line()
     result2 = samples.query_data('Party_size', 2)
     print(result2)
-
-    samples._CustomerAnalytics__df.to_pickle('test_pickle.pkl')

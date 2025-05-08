@@ -66,45 +66,41 @@ import math
 
 #Global declarations Start Here
 
-
+outputFilepath = 'output'
 
 #Class definitions Start Here
 class Inventory():
-    def readData(filename):
+    def readData(self):
         try:
-                my_data = np.genfromtxt(filename, delimiter=',')
-        except FileNotFoundError:
-            with open(f'Doc/log_file.txt', 'a') as file:
-                file.write(f"File {filename} not found in InventoryAnalysis.readPickle() function.\n")
-                file.write(f'{dt.datetime.now()}\n\n')
-            return None
-        
-        return my_data
-
-    
-    
-    def convert_to_df(array):
-        new_df = pd.DataFrame(array[1:], columns=['Party_size', 'Arrival_Time', 'Duration_of_Stay', 'Bill_Amount'])
-        
-
-class InventoryAnalytics(Inventory):
-
-
-    def __init__(self, filename):
-        self.filename = filename
-
-    def readPickle(self):
-        try:
-            df_pick = pd.read_pickle(self.filename)
-            return df_pick
+                my_data = np.genfromtxt(self.filename, delimiter=',')
         except FileNotFoundError:
             with open(f'Doc/log_file.txt', 'a') as file:
                 file.write(f"File {self.filename} not found in InventoryAnalysis.readPickle() function.\n")
                 file.write(f'{dt.datetime.now()}\n\n')
             return None
+        
+        return my_data
+    
+    def convert_to_df(self, array):
+        new_df = pd.DataFrame(array[1:], columns=['Party_size', 'Arrival_Time', 'Duration_of_Stay', 'Bill_Amount'])
+        new_df.to_pickle('df_pickle.pkl')
+
+    def __init__(self, filename):
+        self.filename = filename
+        self.convert_to_df(self.readData())
+        try:
+            self.df = pd.read_pickle('df_pickle.pkl')
+        except FileNotFoundError:
+            with open(f'Doc/log_file.txt', 'a') as file:
+                file.write(f"File df_pickle.pkl not found in Inventory.__init__() function.\n")
+                file.write(f'{dt.datetime.now()}\n\n')
+
+
+class InventoryAnalytics(Inventory):
+    def __init__(self, filename):
+        super().__init__(filename)
           
     def get_events(self, **kwargs):
-        df = self.readPickle()
         event1 = None
         condition_str = ''
         event_list = []
@@ -113,19 +109,19 @@ class InventoryAnalytics(Inventory):
         joint_df = pd.Series(True, index=df.index)
         '''
         for col, condition in kwargs.items():
-            if col not in df.columns:
+            if col not in self.df.columns:
                 with open(f'Doc/log_file.txt', 'a') as file:
                     file.write(f"Column {col} not found in DataFrame.\n")
                     file.write(f'{dt.datetime.now()}\n\n')
                 continue
 
             if callable(condition):
-                event1 = condition(df[col])
+                event1 = condition(self.df[col])
                 condition_str = 'placeholder'
             elif isinstance(condition, str) and condition.startswith("eval:"):
                 try:
                     expr = condition.replace("eval:", "")
-                    event1 = eval(f"df[col] {expr}")    
+                    event1 = eval(f"self.df[col] {expr}")    
                     condition_str = expr 
                 except Exception as e:
                     with open(f'Doc/log_file.txt', 'a') as file:
@@ -133,18 +129,49 @@ class InventoryAnalytics(Inventory):
                         file.write(f'{dt.datetime.now()}\n\n')
                     return None
             else:
-                event1 = df[col] == condition
+                event1 = self.df[col] == condition
                 condition_str = f'= {condition}'
 
             event_list.append(event1)
             condition_list.append(condition_str)
         return event_list, condition_list
     
-    def get_probabilities(self, event1, event2, *args):
-        df = self.readPickle()
+    def plot_violin(self):
+        for col in self.df.select_dtypes(include=['number']).columns:
+            plt.figure()
+            sns.violinplot(y=self.df[col])
+            plt.title(f'Violin Plot of {col}')
+            filename = f'Violin Plot of {col}.png'
+            filepath = os.path.join(outputFilepath,filename)
+            plt.savefig(filepath)
+            plt.close()
+            
+    def plot_box(self):
+        for col in self.df.select_dtypes(include=['number']).columns:
+            plt.figure()
+            sns.boxplot(y=self.df[col])
+            plt.title(f'Box Plot of {col}')
+            filename = f'Box Plot of {col}.png'
+            filepath = os.path.join(outputFilepath,filename)
+            plt.savefig(filepath)
+            plt.close()
 
-        prob_event1 = round(event1.sum() / len(df), 2)
-        prob_event2 = round(event2.sum() / len(df), 2)
+    def plot_scatter(self, x_col, y_col):
+        if x_col in self.df.columns and y_col in self.df.columns:
+            plt.figure()
+            sns.scatterplot(data=self.df, x=x_col, y=y_col)
+            plt.title(f'Scatter Plot: {x_col} vs {y_col}')
+            plt.xlabel(x_col)
+            plt.ylabel(y_col)
+            filename = f'Scatter Plot {x_col} vs {y_col}.png'
+            filepath = os.path.join(outputFilepath,filename)
+            plt.savefig(filepath)
+            plt.close()
+
+    def get_probabilities(self, event1, event2, *args):
+
+        prob_event1 = round(event1.sum() / len(self.df), 2)
+        prob_event2 = round(event2.sum() / len(self.df), 2)
 
         event1_list = event1.to_list()
         event2_list = event2.to_list()
@@ -157,7 +184,7 @@ class InventoryAnalytics(Inventory):
 
         joint_events = pd.Series(joint_events)
 
-        prob_event1_and_event2 = round(joint_events.sum() / len(df), 2)
+        prob_event1_and_event2 = round(joint_events.sum() / len(self.df), 2)
         
         prob_event1_given_event2 = round(prob_event1_and_event2 / prob_event2, 2)
         prob_event2_given_event1 = round(prob_event1_and_event2 / prob_event1, 2)
@@ -172,32 +199,31 @@ class InventoryAnalytics(Inventory):
             file.write(f"Probability of A and B: {prob_event1_and_event2}\n")
 
         
-    def get_data_stats(self, df, col):
-        mean = round(df[col].mean(numeric_only = True),2)
-        median = round(df[col].median(),2)
-        std = round(df[col].std(),2)
+    def get_data_stats(self, col):
+        mean = round(self.df[col].mean(numeric_only = True),2)
+        median = round(self.df[col].median(),2)
+        std = round(self.df[col].std(),2)
 
         with open(f'Output/WrittenOutput', 'a') as file:
             file.write(f'{col} mean: {mean}\n')
             file.write(f'{col} median: {median}\n')
             file.write(f'{col} std: {std}\n')
 
-    def get_all_column_stats(self, df):
-        for col in df:
-            self.get_data_stats(df, col)
+    def get_all_column_stats(self):
+        for col in self.df:
+            self.get_data_stats(col)
 
     def Vector_Ops(self, col1, col2):
-        df = self.readPickle()
 
-        if col1 not in df.columns or col2 not in df.columns:
+        if col1 not in self.df.columns or col2 not in self.df.columns:
             with open(f'Doc/log_file.txt', 'a') as file:
                 file.write(f"Column {col1} or {col2} not found in DataFrame.\n")
                 file.write(f'{dt.datetime.now()}\n\n')
             return None
         
-        vector1 = df[col1].values
-        vector2 = df[col2].values
-        vectors = df[[col1, col2]].values
+        vector1 = self.df[col1].values
+        vector2 = self.df[col2].values
+        vectors = self.df[[col1, col2]].values
         
         def get_position_vector(index):
             nonlocal vectors
@@ -240,21 +266,20 @@ class InventoryAnalytics(Inventory):
 
     
     def unique_vals(self, col1, col2, col3, col4):
-        df = self.readPickle()
 
-        if col1 not in df.columns or col2 not in df.columns or col3 not in df.columns or col4 not in df.columns:
+        if col1 not in self.df.columns or col2 not in self.df.columns or col3 not in self.df.columns or col4 not in self.df.columns:
             with open(f'Doc/log_file.txt', 'a') as file:
                 file.write(f"Column {col1}, {col2}, {col3} or {col4} not found in DataFrame.\n")
                 file.write(f'{dt.datetime.now()}\n\n')
             return None
 
         
-        categories1 = df[col1].unique()
-        categories2 = df[col2].unique()
-        categories3 = df[col3].unique()
-        categories4 = df[col4].unique()
+        categories1 = self.df[col1].unique()
+        categories2 = self.df[col2].unique()
+        categories3 = self.df[col3].unique()
+        categories4 = self.df[col4].unique()
 
-        combinations = df.drop_duplicates(subset=[col1,col2, col3, col4])
+        combinations = self.df.drop_duplicates(subset=[col1,col2, col3, col4])
         permutations = math.factorial(len(combinations))
 
         with open(f'Output/WrittenOutput', 'a') as file:
@@ -264,13 +289,6 @@ class InventoryAnalytics(Inventory):
             file.write(f"Categories in {col4}: {categories4}\n")
             file.write(f"Number of unique combinations: {len(combinations)}\n")
             file.write(f"Number of unique permutations: {permutations}\n")
-
-
-        
-                
-        
-        
-
 
 
 
@@ -290,21 +308,21 @@ def main():
 if __name__ == "__main__":
     
     print(f"\"{module_name_gl}\" module begins.")
-
-
-    array = Inventory.readData('Input/data.csv')
-    Inventory.convert_to_df(array)
     
-    test = InventoryAnalytics('test_pickle.pkl')
-    testResult = test.readPickle()
+    test = InventoryAnalytics('Input/data.csv')
+
+    test.plot_box()
+    test.plot_scatter('Party_size', 'Bill_Amount')
+    test.plot_violin()
 
     events, conditions = test.get_events(Party_size=2, Arrival_Time = 'eval:>= 12')
     
     probabilities = test.get_probabilities(events[0], events[1], conditions[0], conditions[1])
 
-    test.get_all_column_stats(testResult)
+    test.get_all_column_stats()
 
     test.get_events(Price=lambda x: x > 50, Quantity="eval:< 100")
+
     test.Vector_Ops('Party_size', 'Bill_Amount')
     test.unique_vals('Party_size', 'Arrival_Time', 'Duration_of_Stay', 'Bill_Amount')
 

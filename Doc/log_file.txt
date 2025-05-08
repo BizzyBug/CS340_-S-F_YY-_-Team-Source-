@@ -181,3 +181,54 @@ Column Price not found in DataFrame.
 Column Quantity not found in DataFrame.
 2025-04-27 15:40:00.129529
 
+Eval error for column Arrival_Time: name 'df' is not defined
+2025-05-08 11:41:36.934305
+
+Eval error for column Arrival_Time: name 'df' is not defined
+2025-05-08 11:42:58.837695
+
+Eval error for column Arrival_Time: name 'df' is not defined
+2025-05-08 11:44:29.117533
+
+Eval error for column Arrival_Time: name 'df' is not defined
+2025-05-08 11:47:50.082287
+
+Eval error for column Arrival_Time: name 'df' is not defined
+2025-05-08 11:48:21.180710
+
+Column Price not found in DataFrame.
+2025-05-08 11:54:29.204588
+
+Column Quantity not found in DataFrame.
+2025-05-08 11:54:29.204588
+
+Column Price not found in DataFrame.
+2025-05-08 11:54:49.895636
+
+Column Quantity not found in DataFrame.
+2025-05-08 11:54:49.895636
+
+Column Price not found in DataFrame.
+2025-05-08 11:59:50.770790
+
+Column Quantity not found in DataFrame.
+2025-05-08 11:59:50.771791
+
+Column Price not found in DataFrame.
+2025-05-08 12:01:32.524573
+
+Column Quantity not found in DataFrame.
+2025-05-08 12:01:32.524573
+
+Column Price not found in DataFrame.
+2025-05-08 12:10:14.395703
+
+Column Quantity not found in DataFrame.
+2025-05-08 12:10:14.395703
+
+Column Price not found in DataFrame.
+2025-05-08 12:11:32.837132
+
+Column Quantity not found in DataFrame.
+2025-05-08 12:11:32.837132
+
