@@ -1,68 +1,46 @@
-#Version: v0.1
-#Date Last Updated: 1-12-2025
-
-#DELETE THIS comment
-#  Follow the coding standards listed in coding_standards.pdf 
-#  Delete the sections in this template if not used
-
-#%% MODULE BEGINS
 module_name_gl = 'write the file name w/o file extension'
 
 '''
-Version: <***>
+Version: <1.0>
 
 Description:
     <***>
 
 Authors:
-    <***>
+    <Henry Hazlett, Elizabeth Valenti, Davidson Rock>
 
-Date Created     :  <***>
-Date Last Updated:  <***>
+Date Created     :  <4-6-2025>
+Date Last Updated:  <5-8-2025>
 
 Doc:
-    <***>
 
 Notes:
-    cannot figure why the module ParentChild1 cannot be found. 
+     
 '''
 
-#%% IMPORTS                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 if __name__ == "__main__":
    import os
+#
 
 import CustomerData
 import InventoryData
 import UI
 
-
-#%% USER INTERFACE              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-#%% CONSTANTS                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-#%% CONFIGURATION               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-
-#%% INITIALIZATIONS             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-#%% DECLARATIONS                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-#Global declarations Start Here
+#DESCRIPTION f()
+#Purpose: Perform all methods from imported classes.
+#Input: None
+#Output: None
 def f():
-    samples = CustomerData.CustomerAnalytics(UI.UserInput.getInput())
+    samples = CustomerData.CustomerAnalytics(UI.UserInput.getInput('Please enter filename:\n'))
     samples.plot_violin()
     samples.plot_box()
     samples.plot_scatter('Party_size', 'Bill_Amount')
     result1 = samples.advanced_query({'Bill_Amount':('>=', 100)})
-    print(result1)
+    print(result1, flush=True)
     samples.plot_histograms()
     samples.plot_line()
     result2 = samples.query_data('Party_size', 2)
-    print(result2)
+    print(result2, flush=True)
 
     test = InventoryData.InventoryAnalytics('Input/data.csv')
 
@@ -80,12 +58,12 @@ def f():
     
     test.Vector_Ops('Party_size', 'Bill_Amount')
     test.unique_vals('Party_size', 'Arrival_Time', 'Duration_of_Stay', 'Bill_Amount')
+#
 
 #%% SELF-RUN                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #Main Self-run block
 if __name__ == "__main__":
     
-    #print(f"\"{module_name_gl}\" module begins.")
-    
     f()
+#
 

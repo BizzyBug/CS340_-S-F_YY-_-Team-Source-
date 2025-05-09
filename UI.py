@@ -1,85 +1,44 @@
-#Version: v0.1
-#Date Last Updated: 1-12-2025
-
-#DELETE THIS comment
-#  Follow the coding standards listed in coding_standards.pdf 
-#  Delete the sections in this template if not used
-
-#%% MODULE BEGINS
 module_name_gl = 'write the file name w/o file extension'
 
 '''
-Version: <***>
+Version: <1.0>
 
 Description:
-    See if there is a specific time where the most orders are made and the income per
-    hour is the highest.
-    This will help us see if there is a specific time where we can have more employees
-
+    Define user input functionality for use in other modules.
 
 Authors:
-    <***>
+    <Henry Hazlett, Elizabeth Valenti, Davidson Rock>
 
-Date Created     :  <***>
-Date Last Updated:  <***>
+Date Created     :  4-6-2024
+Date Last Updated:  5-8-2025
 
 Doc:
-    <***>
 
 Notes:
-    <***>
+
 '''
 
-#%% IMPORTS                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 if __name__ == "__main__":
    import os
-   #os.chdir("./../..")
 #
 
-import pandas as pd
-import seaborn as sns
-import matplotlib.pyplot as plt
-
-#custom imports
-
-
-#other imports
-
-
-#%% USER INTERFACE              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-#%% CONSTANTS                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-#%% CONFIGURATION               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-
-#%% INITIALIZATIONS             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-#%% DECLARATIONS                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-#Global declarations Start Here
-
-
-
-#Class definitions Start Here
-
+#DESCRIPTION UserInput()
+#Purpose: Get input from the user via the keyboard and include a prompt if necessary.
+#Input: None
+#Output: string input
 class UserInput():
     def getInput(prompt=''):
         return input(prompt)
+    #
+#
 
-#Function definitions Start Here
 def main():
     pass  
 #
 
-#%% SELF-RUN                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#Main Self-run block
 if __name__ == "__main__":
     
-    print(f"\"{module_name_gl}\" module begins.")
+    print(f"\"{module_name_gl}\" module begins.", flush=True)
     
     main()
+#

@@ -232,3 +232,21 @@ Column Price not found in DataFrame.
 Column Quantity not found in DataFrame.
 2025-05-08 12:11:32.837132
 
+Column Price not found in DataFrame.
+2025-05-08 20:04:05.527473
+
+Column Quantity not found in DataFrame.
+2025-05-08 20:04:05.527473
+
+Column Price not found in DataFrame.
+2025-05-08 21:13:56.955986
+
+Column Quantity not found in DataFrame.
+2025-05-08 21:13:56.955986
+
+Column Price not found in DataFrame.
+2025-05-08 21:14:12.658066
+
+Column Quantity not found in DataFrame.
+2025-05-08 21:14:12.658066
+
